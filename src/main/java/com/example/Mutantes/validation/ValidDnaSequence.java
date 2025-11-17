@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidDnaSequence {
-    String message() default "Invalid DNA sequence: must be a square NxN matrix (minimum 4x4) with only A, T, C, G characters";
+    String message() default "Secuencia DNA invalidida: debe ser una matriz NxN (minimo 4x4) y solamente con caracteres A, T, C, G";
 
     Class<?>[] groups() default {};
 

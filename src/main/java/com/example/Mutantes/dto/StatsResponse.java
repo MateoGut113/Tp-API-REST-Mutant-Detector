@@ -18,4 +18,7 @@ public record StatsResponse(
                 required = true)
         Double ratio
 ) {
+    public static StatsResponse fromEntity(Long mutantes, Long humanos, Double ratio) {
+        return new StatsResponse(mutantes, humanos, ratio);
+    }
 }

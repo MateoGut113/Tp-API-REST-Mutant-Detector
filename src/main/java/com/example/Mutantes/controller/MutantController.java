@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 
 @Tag(name = "Mutantes", description = "Sistema de control de ADN, para distinguir humamos de mutantes.")
-@RequestMapping("/api")
+@RequestMapping("/dna")
 @RestController
 public class MutantController {
     private final MutantService mutantService;
     private final StatsService statsService;
 
 
-    @Operation(summary = "Analizar un DNA", description = "Analiza un adn, validando a la matriz y su contenido")
+    @Operation(summary = "Analizar un DNA", description = "Analiza un ADN, validando a la matriz y su contenido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "DNA Mutante"),
             @ApiResponse(responseCode = "400", description = "Validacion de matriz denegada",

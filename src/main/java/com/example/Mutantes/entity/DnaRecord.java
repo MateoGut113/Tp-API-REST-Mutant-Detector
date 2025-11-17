@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "dna_records",
         indexes = {
-                @Index(name = "idx_dna_hash", columnList = "dnaHash", unique = true),
-                @Index(name = "idx_is_mutant", columnList = "isMutant")
+                @Index(name = "idx_dna_hash", columnList = "dna_hash"),
+                @Index(name = "idx_is_mutant", columnList = "is_mutant")
         })
 public class DnaRecord {
     @Id
