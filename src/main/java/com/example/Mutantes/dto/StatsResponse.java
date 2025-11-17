@@ -1,4 +1,21 @@
 package com.example.Mutantes.dto;
 
-public record StatsResponse() {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record StatsResponse(
+        @Schema(description = "Cantidad de DNAs mutantes detectados",
+                example = "50",
+                required = true)
+        Long count_mutant_dna,
+
+        @Schema(description = "Cantidad de DNAs humanos detectados",
+                example = "100",
+                required = true)
+        Long count_human_dna,
+
+        @Schema(description = "Ratio = mutantes / humanos",
+                example = "0.5",
+                required = true)
+        Double ratio
+) {
 }

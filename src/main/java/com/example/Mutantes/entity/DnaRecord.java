@@ -24,13 +24,13 @@ public class DnaRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(name = "dna_hash", nullable = false, unique = true, length = 64)
     private String dnaHash;
 
-    @Column(nullable = false)
+    @Column(name = "is_mutant", nullable = false)
     private boolean isMutant;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
 }

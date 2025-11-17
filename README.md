@@ -1372,7 +1372,7 @@ SELECT COUNT(*) FROM dna_records WHERE is_mutant = true
 1. Asegúrate de que la app esté corriendo: `gradlew.bat bootRun`
 2. Abre: http://localhost:8080/h2-console
 3. Configura la conexión:
-   - **JDBC URL:** `jdbc:h2:mem:testdb`
+   - **JDBC URL:** `jdbc:h2:mem:mutantesdb`
    - **User Name:** `sa`
    - **Password:** *(dejar vacío)*
 4. Click "Connect"
@@ -1407,7 +1407,7 @@ SELECT * FROM dna_records WHERE dna_hash = '3a5f2c9e...';
 #### Request
 
 ```http
-POST http://localhost:8080/mutant
+POST http://localhost:8080/api/mutant
 Content-Type: application/json
 
 {
@@ -1453,7 +1453,7 @@ Content-Type: application/json
   "status": 400,
   "error": "Bad Request",
   "message": "Invalid DNA sequence: must be a square NxN matrix (minimum 4x4) with only A, T, C, G characters",
-  "path": "/mutant"
+  "path": "/api/mutant"
 }
 ```
 
@@ -1487,17 +1487,17 @@ La API valida:
 
 ```bash
 # Mutante (retorna 200)
-curl -X POST http://localhost:8080/mutant \
+curl -X POST http://localhost:8080/api/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}'
 
 # Humano (retorna 403)
-curl -X POST http://localhost:8080/mutant \
+curl -X POST http://localhost:8080/api/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"]}'
 
 # Inválido (retorna 400)
-curl -X POST http://localhost:8080/mutant \
+curl -X POST http://localhost:8080/api/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATXC","CAGT","TTAT","AGAC"]}'
 ```
@@ -1511,7 +1511,7 @@ curl -X POST http://localhost:8080/mutant \
 #### Request
 
 ```http
-GET http://localhost:8080/stats
+GET http://localhost:8080/api/stats
 ```
 
 **Sin body.** Es un GET simple.
@@ -1564,7 +1564,7 @@ if (countHuman == 0) {
 #### Ejemplo con cURL
 
 ```bash
-curl http://localhost:8080/stats
+curl http://localhost:8080/api/stats
 ```
 
 **Response:**
@@ -1867,7 +1867,7 @@ Descarga desde: https://www.postman.com/downloads/
 
 1. New → HTTP Request
 2. Método: **POST**
-3. URL: `http://localhost:8080/mutant`
+3. URL: `http://localhost:8080/api/mutant`
 4. Headers:
    - Key: `Content-Type`
    - Value: `application/json`
@@ -1893,7 +1893,7 @@ Descarga desde: https://www.postman.com/downloads/
 
 1. New → HTTP Request
 2. Método: **GET**
-3. URL: `http://localhost:8080/stats`
+3. URL: `http://localhost:8080/api/stats`
 4. Click **Send**
 5. Verás el JSON con estadísticas
 
@@ -1905,34 +1905,34 @@ Descarga desde: https://www.postman.com/downloads/
 
 ```powershell
 # POST /mutant (Mutante)
-curl -X POST http://localhost:8080/mutant `
+curl -X POST http://localhost:8080/api/mutant `
   -H "Content-Type: application/json" `
   -d '{\"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTA\",\"TCACTG\"]}'
 
 # POST /mutant (Humano)
-curl -X POST http://localhost:8080/mutant `
+curl -X POST http://localhost:8080/api/mutant `
   -H "Content-Type: application/json" `
   -d '{\"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATTT\",\"AGACGG\",\"GCGTCA\",\"TCACTG\"]}'
 
 # GET /stats
-curl http://localhost:8080/stats
+curl http://localhost:8080/api/stats
 ```
 
 #### Mac/Linux (Bash)
 
 ```bash
 # POST /mutant (Mutante)
-curl -X POST http://localhost:8080/mutant \
+curl -X POST http://localhost:8080/api/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}'
 
 # POST /mutant (Humano)
-curl -X POST http://localhost:8080/mutant \
+curl -X POST http://localhost:8080/api/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"]}'
 
 # GET /stats
-curl http://localhost:8080/stats
+curl http://localhost:8080/api/stats
 ```
 
 ---
