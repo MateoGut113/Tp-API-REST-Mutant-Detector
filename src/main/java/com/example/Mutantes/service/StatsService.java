@@ -3,8 +3,10 @@ package com.example.Mutantes.service;
 import com.example.Mutantes.dto.StatsResponse;
 import com.example.Mutantes.repository.DnaRecordRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class StatsService {
     private final DnaRecordRepository dnaRecordRepository;
 

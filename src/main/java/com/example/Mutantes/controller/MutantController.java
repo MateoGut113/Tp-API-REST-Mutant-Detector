@@ -27,19 +27,19 @@ public class MutantController {
     private final StatsService statsService;
 
 
-    @Operation(summary = "Analizar un DNA", description = "Analiza un ADN, validando a la matriz y su contenido")
+    @Operation(summary = "Analyze DNA", description = "Analiza un ADN, validando a la matriz y su contenido")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "DNA Mutante"),
+            @ApiResponse(responseCode = "200", description = "ADN Mutante"),
             @ApiResponse(responseCode = "400", description = "Validacion de matriz denegada",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
-            @ApiResponse(responseCode = "403", description = "DNA Humano")
+            @ApiResponse(responseCode = "403", description = "ADN Humano")
     })
     @PostMapping("/mutant")
     public ResponseEntity<Void> isMutant(@Validated @RequestBody DnaRequest request) {
-        boolean esMutante = mutantService.esMutante(request.getDna());
+        boolean esMutante = mutantService.isMutant(request.dna());
 
         if (esMutante) {
             return ResponseEntity.ok().build();
