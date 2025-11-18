@@ -8,15 +8,10 @@ public record DnaRequest(
         @NotNull
         @NotEmpty
         @ValidDnaSequence
-        @Schema(description = "DNA a ",
-                example = "\"dna\": [\n" +
-                        "  \"ATGCGA\",\n" +
-                        "  \"CAGTGC\",\n" +
-                        "  \"TTATGT\",\n" +
-                        "  \"AGAAGG\",\n" +
-                        "  \"CCCCTA\",\n" +
-                        "  \"TCACTG\"\n" +
-                        "  ]",
-                required = true)
+        @Schema(
+                description = "Secuencia de ADN representada como matriz NxN",
+                example = "[\"ATGCGA\", \"CAGTGC\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\"]",
+                required = true
+        )
         String[] dna
 ) { }

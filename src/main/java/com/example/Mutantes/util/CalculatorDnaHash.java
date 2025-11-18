@@ -1,5 +1,7 @@
 package com.example.Mutantes.util;
 
+import com.example.Mutantes.exception.DnaHashCalculationException;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +30,7 @@ public final class CalculatorDnaHash {
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error calculando SHA-256", e);
+            throw new DnaHashCalculationException("Error calculando SHA-256", e);
         }
     }
 }
