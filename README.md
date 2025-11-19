@@ -1613,6 +1613,7 @@ src/test/java/org/example/
 ### Ejecutar Tests
 
 ```bash
+#Windows
 # Todos los tests
 gradlew.bat test
 
@@ -1621,6 +1622,18 @@ gradlew.bat test --tests MutantDetectorTest
 
 # Solo un método
 gradlew.bat test --tests MutantDetectorTest.testMutantWithHorizontalAndDiagonalSequences
+```
+
+```bash
+#Mac/Linux
+# Todos los tests
+./gradlew test
+
+# Solo una clase
+./gradlew test --tests MutantDetectorTest
+
+# Solo un método específico dentro de la clase
+./gradlew test --tests MutantDetectorTest.testMutantWithHorizontalAndDiagonalSequences
 ```
 
 ### Tests Unitarios vs Integración
@@ -1634,7 +1647,7 @@ gradlew.bat test --tests MutantDetectorTest.testMutantWithHorizontalAndDiagonalS
 @DisplayName("Debe detectar mutante con secuencias horizontal y diagonal")
 void testMutantWithHorizontalAndDiagonalSequences() {
     String[] dna = {
-        "ATGCGA",
+        "ATGCGA",  // ← Diagonal descendiente: AAAA
         "CAGTGC",
         "TTATGT",
         "AGAAGG",
@@ -1665,7 +1678,7 @@ class MutantControllerTest {
     private MockMvc mockMvc;  // ← Para hacer requests simulados
 
     @Test
-    @DisplayName("POST /mutant debe retornar 200 para mutante")
+    @DisplayName("POST /dna/mutant debe retornar 200 para mutante")
     void testCheckMutant_ReturnOk_WhenIsMutant() throws Exception {
         String jsonRequest = """
             {
@@ -1673,7 +1686,7 @@ class MutantControllerTest {
             }
             """;
 
-        mockMvc.perform(post("/mutant")
+        mockMvc.perform(post("/dna/mutant")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
             .andExpect(status().isOk());  // ← Verifica HTTP 200

@@ -64,27 +64,45 @@ public class MutantDetector {
 
     private boolean checkHorizontal(char[][] matrix, int row, int col) {
         final char base = matrix[row][col];
-        return matrix[row][col + 1] == base &&
-                matrix[row][col + 2] == base &&
-                matrix[row][col + 3] == base;
+        boolean fourInRow = matrix[row][col + 1] == base &&
+                            matrix[row][col + 2] == base &&
+                            matrix[row][col + 3] == base;
+
+        boolean noExtra = (col + SEQUENCE_LENGTH >= matrix.length) || matrix[row][col + SEQUENCE_LENGTH] != base;
+
+        return fourInRow && noExtra;
     }
     private boolean checkVertical(char[][] matrix, int row, int col) {
         final char base = matrix[row][col];
-        return matrix[row + 1][col] == base &&
-                matrix[row + 2][col] == base &&
-                matrix[row + 3][col] == base;
+        boolean fourInCol = matrix[row + 1][col] == base &&
+                            matrix[row + 2][col] == base &&
+                            matrix[row + 3][col] == base;
+
+        boolean noExtra = (row + SEQUENCE_LENGTH >= matrix.length) || matrix[row + SEQUENCE_LENGTH][col] != base;
+
+        return fourInCol && noExtra;
     }
     private boolean checkDiagonalDescending(char[][] matrix, int row, int col) {
         final char base = matrix[row][col];
-        return matrix[row + 1][col + 1] == base &&
-                matrix[row + 2][col + 2] == base &&
-                matrix[row + 3][col + 3] == base;
+        boolean fourInDiag = matrix[row + 1][col + 1] == base &&
+                            matrix[row + 2][col + 2] == base &&
+                            matrix[row + 3][col + 3] == base;
+
+        boolean noExtra = (row + SEQUENCE_LENGTH >= matrix.length || col + SEQUENCE_LENGTH >= matrix.length)
+                || matrix[row + SEQUENCE_LENGTH][col + SEQUENCE_LENGTH] != base;
+
+        return fourInDiag && noExtra;
     }
     private boolean checkDiagonalAscending(char[][] matrix, int row, int col) {
         final char base = matrix[row][col];
-        return matrix[row - 1][col + 1] == base &&
+        boolean fourInDiag = matrix[row - 1][col + 1] == base &&
                 matrix[row - 2][col + 2] == base &&
                 matrix[row - 3][col + 3] == base;
+
+        boolean noExtra = (row - SEQUENCE_LENGTH < 0 || col + SEQUENCE_LENGTH >= matrix.length)
+                || matrix[row - SEQUENCE_LENGTH][col + SEQUENCE_LENGTH] != base;
+
+        return fourInDiag && noExtra;
     }
 
 }
