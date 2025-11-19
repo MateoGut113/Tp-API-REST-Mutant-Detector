@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 
-@Tag(name = "Mutantes", description = "Sistema de control de ADN, para distinguir humamos de mutantes.")
+@Tag(name = "Mutant Detector API", description = "\nSistema de control de ADN, para detección de mutantes y consulta de estadísticas.")
 @RequestMapping("/dna")
 @RestController
 public class MutantController {
@@ -27,15 +27,16 @@ public class MutantController {
     private final StatsService statsService;
 
 
-    @Operation(summary = "Analyze DNA", description = "Analiza un ADN, validando a la matriz y su contenido")
+    @Operation(summary = "Analizador de ADN", description = "Analiza un ADN, validando a la matriz y su contenido")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "ADN Mutante"),
-            @ApiResponse(responseCode = "400", description = "Validacion de matriz denegada",
+            @ApiResponse(responseCode = "200", description = "ADN Mutante - Se encontraron más de una secuencia de 4 letras iguales"),
+            @ApiResponse(responseCode = "400", description = "Validacion de matriz denegada - ADN nulo, vacío, matriz no cuadrada o caracteres inválidos",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
-            @ApiResponse(responseCode = "403", description = "ADN Humano")
+            @ApiResponse(responseCode = "403", description = "ADN Humano - Se encontró una o ninguna secuencia de 4 letras iguales",
+                    content = @Content())
     })
     @PostMapping("/mutant")
     public ResponseEntity<Void> isMutant(@Validated @RequestBody DnaRequest request) {

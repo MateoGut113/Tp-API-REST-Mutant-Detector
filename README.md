@@ -221,6 +221,7 @@ build/libs/inicial1-0.0.1-SNAPSHOT.jar
 ### Opciones del comando bootJar
 
 ```bash
+# Windows
 # Sin ejecutar tests (más rápido)
 gradlew.bat bootJar -x test
 
@@ -234,6 +235,21 @@ gradlew.bat bootJar --info
 gradlew.bat bootJar --no-build-cache
 ```
 
+```bash
+# Mac/Linux
+# Sin ejecutar tests (más rápido)
+./gradlew bootJar -x test
+
+# Limpiar antes de generar
+./gradlew clean bootJar
+
+# Ver información detallada
+./gradlew bootJar --info
+
+# Forzar regeneración (sin usar caché)
+./gradlew bootJar --no-build-cache
+```
+
 ### Ejecutar el JAR generado
 
 Una vez generado el JAR, puedes ejecutarlo directamente con Java:
@@ -243,13 +259,13 @@ Una vez generado el JAR, puedes ejecutarlo directamente con Java:
 cd build/libs
 
 # Ejecutar el JAR (Windows/Linux/Mac)
-java -jar inicial1-0.0.1-SNAPSHOT.jar
+java -jar Mutantes-0.0.1-SNAPSHOT.jar
 
 # Con puerto personalizado
-java -jar -Dserver.port=9090 inicial1-0.0.1-SNAPSHOT.jar
+java -jar -Dserver.port=9090 Mutantes-0.0.1-SNAPSHOT.jar
 
 # Con perfil de producción
-java -jar -Dspring.profiles.active=prod inicial1-0.0.1-SNAPSHOT.jar
+java -jar -Dspring.profiles.active=prod Mutantes-0.0.1-SNAPSHOT.jar
 ```
 
 **Ventajas del JAR:**
@@ -324,7 +340,7 @@ El Dockerfile usa **multi-stage build** para optimizar el tamaño de la imagen f
 **Etapa 1 - Build (`FROM alpine:latest as build`):**
 - 🎯 **Propósito:** Compilar el código y generar el JAR
 - 📦 **Imagen base:** Alpine Linux (muy ligera, ~5MB)
-- ☕ **Instala:** OpenJDK 17 para compilar
+- ☕ **Instala:** OpenJDK 17 para compilar u otro de Alpine (recomendado)
 - 🔨 **Acción:** Ejecuta `gradlew bootJar` para generar el artefacto
 - 📁 **Resultado:** JAR en `build/libs/`
 
@@ -340,7 +356,7 @@ El Dockerfile usa **multi-stage build** para optimizar el tamaño de la imagen f
 RUN apk update && apk add openjdk17
 ```
 - `apk` es el gestor de paquetes de Alpine Linux
-- Instala OpenJDK 17 necesario para compilar
+- Instala OpenJDK 17 (en este caso) necesario para compilar
 
 ```dockerfile
 COPY . .
