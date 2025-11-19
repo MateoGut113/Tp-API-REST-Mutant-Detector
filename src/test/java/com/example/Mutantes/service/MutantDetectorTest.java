@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MutantDetectorTest {
+    //Casos Mutantes (debe retornar true)
     @Test
     @DisplayName("Debe detectar mutante con secuencias horizontal y diagonal")
     void testMutantWithHorizontalAndDiagonalSequences() {
@@ -20,7 +21,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
     @Test
@@ -36,7 +37,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
     @Test
@@ -68,7 +69,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
     @Test
@@ -88,7 +89,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
     @Test
@@ -104,9 +105,10 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Debe retornar true
+        assertTrue(detector.isMutant(dna));
     }
 
+    //Casos Humanos (debe retornar false)
     @Test
     @DisplayName("Debe detectar humano con solo 1 secuencia encontrada")
     void testNotMutantWithOnlyOneSequence(){
@@ -120,7 +122,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertFalse(detector.isMutant(dna));  // ← Debe retornar false
+        assertFalse(detector.isMutant(dna));
     }
 
     @Test
@@ -136,7 +138,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertFalse(detector.isMutant(dna));  // ← Debe retornar false
+        assertFalse(detector.isMutant(dna));
     }
 
     @Test
@@ -150,15 +152,16 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertFalse(detector.isMutant(dna));  // ← Debe retornar false
+        assertFalse(detector.isMutant(dna));
     }
 
-    @Test
-    @DisplayName("Debe retornar false si el DNA es null")
+    //Validaciones (debe retornar false)
+    /*@Test
+    @DisplayName("Debe retornar error si el DNA es null, ya que de eso se encarga el DTO")
     void testNotMutantWithNullDna() {
         MutantDetector detector = new MutantDetector();
-        assertFalse(detector.isMutant(null));  // ← Esperamos false o excepción controlada
-    }
+        assertFalse(detector.isMutant(null));
+    }*/
 
     @Test
     @DisplayName("Debe retornar false si el DNA está vacío")
@@ -182,7 +185,8 @@ public class MutantDetectorTest {
         assertFalse(detector.isMutant(dna));
     }
 
-    @Test
+
+    /* @Test
     @DisplayName("Debe retornar error si el DNA contiene caracteres inválidos, ya que de eso se encarga el DTO")
     void testNotMutantWithInvalidCharacters() {
         String[] dna = {
@@ -196,9 +200,9 @@ public class MutantDetectorTest {
 
         MutantDetector detector = new MutantDetector();
         assertFalse(detector.isMutant(dna));
-    }
+    } */
 
-    @Test
+    /* @Test
     @DisplayName("Debe retornar error si alguna fila del DNA es null, ya que de eso se encarga el DTO")
     void testNotMutantWithNullRow() {
         String[] dna = {
@@ -212,7 +216,7 @@ public class MutantDetectorTest {
 
         MutantDetector detector = new MutantDetector();
         assertFalse(detector.isMutant(dna));
-    }
+    } */
 
     @Test
     @DisplayName("Debe retornar false si el DNA es demasiado pequeño (3x3)")
@@ -227,6 +231,7 @@ public class MutantDetectorTest {
         assertFalse(detector.isMutant(dna));
     }
 
+    //Edge Cases
     @Test
     @DisplayName("No debe detectar mutante con 1 sola secuencia de longitud 5")
     void testNotMutantWithSequenceLongerThanFour() {
@@ -239,7 +244,7 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertFalse(detector.isMutant(dna));  // ← Esperamos false
+        assertFalse(detector.isMutant(dna));
     }
 
     @Test
@@ -255,6 +260,6 @@ public class MutantDetectorTest {
         };
 
         MutantDetector detector = new MutantDetector();
-        assertTrue(detector.isMutant(dna));  // ← Esperamos true
+        assertTrue(detector.isMutant(dna));
     }
 }

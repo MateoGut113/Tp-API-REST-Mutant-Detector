@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,22 +16,120 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MutantControllerTest {
-        @Autowired
-        private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-        @Test
-        @DisplayName("POST /dna/mutant debe retornar 200 para mutante")
-        void testCheckMutant_ReturnOk_WhenIsMutant() throws Exception {
-            String jsonRequest = """
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 200 para mutante")
+    void testCheckMutant_ReturnOk_WhenIsMutant() throws Exception {
+        String jsonRequest = """
+           {
+             "dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+           }
+           """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 403 para humano")
+    void testCheckMutant_ReturnForbidden_WhenIsHuman() throws Exception {
+        String jsonRequest = """
             {
-              "dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+              "dna": ["CTGCGA","CAGTGC","TTATGT","AGAAGG","GCCCTA","TCACTG"]
             }
             """;
 
-            mockMvc.perform(post("/dna/mutant")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(jsonRequest))
-                    .andExpect(status().isOk());
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 400 para error en validacion de caracteres en matriz")
+    void testCheckMutant_ReturnBadRequest_WithInvalidCharacters() throws Exception {
+        String jsonRequest = """
+            {
+              "dna": ["ATXCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+            }
+            """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 400 para matriz vacía")
+    void testCheckMutant_ReturnBadRequest_WithEmptyMatrix() throws Exception {
+        String jsonRequest = """
+            {
+              "dna": []
+            }
+            """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 400 para ADN nulo")
+    void testCheckMutant_ReturnBadRequest_WithNullDna() throws Exception {
+        String jsonRequest = """
+        {
+          "dna": null
         }
+        """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 400 para error con fila nula en matriz")
+    void testCheckMutant_ReturnBadRequest_WithNullRow() throws Exception {
+        String jsonRequest = """
+            {
+              "dna": ["ATCCGA",null,"TTATGT","AGAAGG","CCCCTA","TCACTG"]
+            }
+            """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /dna/mutant debe retornar 400 para error en validacion de tamaño en matriz")
+    void testCheckMutant_ReturnBadRequest_WithSmallMatrix() throws Exception {
+        String jsonRequest = """
+            {
+              "dna": ["ATC","CAG","TTA"]
+            }
+            """;
+
+        mockMvc.perform(post("/dna/mutant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("GET /stats debe retornar 200 OK")
+    void testGetStats_ReturnOk() throws Exception {
+        mockMvc.perform(get("/dna/stats")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
 }

@@ -1740,7 +1740,7 @@ testNotMutantSmallDna()
 
 ```java
 // ⚠️ DNA null
-testNotMutantWithNullDna()
+testNotMutantWithNullDna()  // --> Probado en MutantControllerTest ya que esta capa es la que se encarga 
 
 // ⚠️ Array vacío
 testNotMutantWithEmptyDna()
@@ -1749,10 +1749,10 @@ testNotMutantWithEmptyDna()
 testNotMutantWithNonSquareDna()
 
 // ⚠️ Carácter inválido 'X'
-testNotMutantWithInvalidCharacters()
+testNotMutantWithInvalidCharacters() // --> Probado en MutantControllerTest ya que esta capa es la que se encarga
 
 // ⚠️ Fila null
-testNotMutantWithNullRow()
+testNotMutantWithNullRow() // --> Probado en MutantControllerTest ya que esta capa es la que se encarga
 
 // ⚠️ Matriz muy pequeña (3x3)
 testNotMutantWithTooSmallDna()
@@ -1773,11 +1773,21 @@ testMutantDiagonalInCorner()
 #### Generar Reporte
 
 ```bash
+#Windows
 # Ejecutar tests + generar reporte
 gradlew.bat test jacocoTestReport
 
 # Abrir reporte HTML
 start build\reports\jacoco\test\html\index.html
+```
+
+```bash
+#Mac/Linux
+# Ejecutar tests + generar reporte
+./gradlew test jacocoTestReport
+
+# Abrir reporte HTML
+xdg-open build/reports/jacoco/test/html/index.html
 ```
 
 #### Interpretar Reporte
@@ -1802,13 +1812,13 @@ El reporte muestra:
 ```
 Package: org.example.service
 ├── MutantDetector.java      96% ✅
-├── MutantService.java       95% ✅
+├── MutantService.java       100% ✅
 └── StatsService.java        100% ✅
 
 Package: org.example.controller
 └── MutantController.java    100% ✅
 
-Overall: 71% (incluye código generado por Lombok)
+Overall: 92% (incluye código generado por Lombok)
 ```
 
 **Nota sobre Lombok:**
@@ -1825,12 +1835,23 @@ Swagger UI es una interfaz web interactiva para probar la API.
 #### Paso 1: Iniciar la aplicación
 
 ```bash
+#Windows
 gradlew.bat bootRun
 ```
+
+```bash
+#Mac/Linux
+./gradlew bootRun
+```
+
 
 Espera a ver:
 ```
 Started MutantDetectorApplication in 3.456 seconds
+```
+o
+```
+"===Aplicacion en curso==="
 ```
 
 #### Paso 2: Abrir Swagger UI
