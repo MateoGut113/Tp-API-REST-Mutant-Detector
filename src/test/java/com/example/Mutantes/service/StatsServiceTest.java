@@ -27,7 +27,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(5L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(1L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(5L, response.count_mutant_dna());
         assertEquals(1L, response.count_human_dna());
@@ -40,7 +40,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(5L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(0L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(5L, response.count_mutant_dna());
         assertEquals(0L, response.count_human_dna());
@@ -53,7 +53,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(0L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(5L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(0L, response.count_mutant_dna());
         assertEquals(5L, response.count_human_dna());
@@ -66,7 +66,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(0L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(0L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(0L, response.count_mutant_dna());
         assertEquals(0L, response.count_human_dna());
@@ -79,7 +79,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(10L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(10L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(10L, response.count_mutant_dna());
         assertEquals(10L, response.count_human_dna());
@@ -92,7 +92,7 @@ public class StatsServiceTest {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(3L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(7L);
 
-        StatsResponse response = statsService.obtenerEstadisticas();
+        StatsResponse response = statsService.obtenerEstadisticas(null, null);
 
         assertEquals(3L, response.count_mutant_dna());
         assertEquals(7L, response.count_human_dna());

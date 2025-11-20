@@ -1,4 +1,4 @@
-package com.example.Mutantes.util;
+package com.example.Mutantes.tool;
 
 import com.example.Mutantes.exception.DnaHashCalculationException;
 

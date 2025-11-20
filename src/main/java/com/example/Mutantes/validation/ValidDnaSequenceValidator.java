@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 public class ValidDnaSequenceValidator implements ConstraintValidator<ValidDnaSequence, String[]> {
     @Override
     public boolean isValid(String[] dna, ConstraintValidatorContext context) {
-        if (dna == null || dna.length < 4) {
+        if (dna == null || dna.length < 4 || dna.length > 1000) {
             return false;
         }
 

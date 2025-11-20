@@ -1,4 +1,4 @@
-package com.example.Mutantes.util;
+package com.example.Mutantes.tool;
 
 public final class ConvertCharDna {
     private ConvertCharDna() {}

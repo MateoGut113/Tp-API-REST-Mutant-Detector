@@ -1,13 +1,16 @@
 package com.example.Mutantes.service;
 
 import com.example.Mutantes.entity.DnaRecord;
+import com.example.Mutantes.exception.HashNotFoundException;
 import com.example.Mutantes.repository.DnaRecordRepository;
-import com.example.Mutantes.util.CalculatorDnaHash;
+import com.example.Mutantes.tool.CalculatorDnaHash;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Service
@@ -15,12 +18,13 @@ public class MutantService {
     private final DnaRecordRepository dnaRecordRepository;
     private final MutantDetector mutantDetector;
 
-    public boolean isMutant(String[] dna) {
+    @Async
+    public CompletableFuture<Boolean> isMutant(String[] dna) {
         String hash = CalculatorDnaHash.sha256(dna);
 
         Optional<DnaRecord> cached = dnaRecordRepository.findByDnaHash(hash);
         if (cached.isPresent()) {
-            return cached.get().isMutant();
+            return CompletableFuture.completedFuture(cached.get().isMutant());
         }
 
         boolean result = mutantDetector.isMutant(dna);
@@ -32,6 +36,12 @@ public class MutantService {
                 .build();
         dnaRecordRepository.save(record);
 
-        return result;
+        return CompletableFuture.completedFuture(result);
+    }
+
+    public void deleteByHash(String hash) {
+        DnaRecord record = dnaRecordRepository.findByDnaHash(hash)
+                .orElseThrow(() -> new HashNotFoundException("No existe un ADN con el hash " +hash));
+        dnaRecordRepository.delete(record);
     }
 }

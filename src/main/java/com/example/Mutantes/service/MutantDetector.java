@@ -1,8 +1,10 @@
 package com.example.Mutantes.service;
 
-import com.example.Mutantes.util.ConvertCharDna;
+import com.example.Mutantes.tool.ConvertCharDna;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class MutantDetector {
     private static final int SEQUENCE_LENGTH = 4;
@@ -70,6 +72,10 @@ public class MutantDetector {
 
         boolean noExtra = (col + SEQUENCE_LENGTH >= matrix.length) || matrix[row][col + SEQUENCE_LENGTH] != base;
 
+        if (fourInRow && noExtra) {
+            log.debug("Secuencia horizontal encontrada en fila {} col {}", row, col);
+        }
+
         return fourInRow && noExtra;
     }
     private boolean checkVertical(char[][] matrix, int row, int col) {
@@ -79,6 +85,10 @@ public class MutantDetector {
                             matrix[row + 3][col] == base;
 
         boolean noExtra = (row + SEQUENCE_LENGTH >= matrix.length) || matrix[row + SEQUENCE_LENGTH][col] != base;
+
+        if (fourInCol && noExtra) {
+            log.debug("Secuencia vertical encontrada en fila {} col {}", row, col);
+        }
 
         return fourInCol && noExtra;
     }
@@ -91,6 +101,10 @@ public class MutantDetector {
         boolean noExtra = (row + SEQUENCE_LENGTH >= matrix.length || col + SEQUENCE_LENGTH >= matrix.length)
                 || matrix[row + SEQUENCE_LENGTH][col + SEQUENCE_LENGTH] != base;
 
+        if (fourInDiag && noExtra) {
+            log.debug("Secuencia diagonal descendiente encontrada en fila {} col {}", row, col);
+        }
+
         return fourInDiag && noExtra;
     }
     private boolean checkDiagonalAscending(char[][] matrix, int row, int col) {
@@ -101,6 +115,10 @@ public class MutantDetector {
 
         boolean noExtra = (row - SEQUENCE_LENGTH < 0 || col + SEQUENCE_LENGTH >= matrix.length)
                 || matrix[row - SEQUENCE_LENGTH][col + SEQUENCE_LENGTH] != base;
+
+        if (fourInDiag && noExtra) {
+            log.debug("Secuencia diagonal ascendiente encontrada en fila {} col {}", row, col);
+        }
 
         return fourInDiag && noExtra;
     }

@@ -570,6 +570,49 @@ docker-compose logs -f
 docker-compose down
 ```
 
+**Este proyecto lo creamos con pasaje de datos de H2 a Postgre**
+
+### Flujo típico con Docker + PostgreSQL
+
+1. Levantar servicios
+```bash
+#Igual que up -d, pero fuerza la reconstrucción de la imagen antes de levantar los servicios.
+
+docker-compose up --build
+
+#Esto arranca postgres-mutantes y tu mutantes-app.
+```
+
+2. Verificar tablas
+```bash
+#Aquí se entra al contenedor postgres-mutantes y se abre la consola interactiva de psql conectada a la base mutantdb con el usuario mutant_user.
+docker exec -it postgres-mutantes psql -U mutant_user -d mutantdb
+
+#Este no es un comando de Docker, sino un meta-comando de psql.
+#Sirve para listar las tablas existentes en la base de datos actual.
+\dt
+
+#Vas a ver dna_record y las demás tablas creadas por JPA.
+```
+
+3. Migración opcional de datos
+
+Si querés pasar datos de H2:
+
+- Arranca tu aplicación con H2.
+- Entra a la consola: http://localhost:8080/h2-console.
+- Ejecuta:
+
+```sql
+SCRIPT TO 'backup.sql';
+```
+
+Luego importás en PostgreSQL:
+
+```bash
+psql -U mutant_user -d mutantdb -f backup.sql
+```
+
 ### Troubleshooting Docker
 
 **Problema: "Cannot connect to Docker daemon"**
@@ -1865,7 +1908,7 @@ Verás la documentación interactiva de la API.
 
 #### Paso 3: Probar POST /mutant
 
-1. Expande el endpoint **POST /mutant**
+1. Expande el endpoint **POST /dna/mutant**
 2. Click en **"Try it out"**
 3. Modifica el JSON de ejemplo:
 
@@ -1892,7 +1935,7 @@ Response Body: (empty)
 
 #### Paso 4: Probar GET /stats
 
-1. Expande el endpoint **GET /stats**
+1. Expande el endpoint **GET /dna/stats**
 2. Click en **"Try it out"**
 3. Click en **"Execute"**
 4. Verás la respuesta:
@@ -1971,17 +2014,17 @@ curl http://localhost:8080/dna/stats
 #### Mac/Linux (Bash)
 
 ```bash
-# POST /mutant (Mutante)
+# POST /dna/mutant (Mutante)
 curl -X POST http://localhost:8080/dna/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}'
 
-# POST /mutant (Humano)
+# POST /dna/mutant (Humano)
 curl -X POST http://localhost:8080/dna/mutant \
   -H "Content-Type: application/json" \
   -d '{"dna":["ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"]}'
 
-# GET /stats
+# GET /dna/stats
 curl http://localhost:8080/dna/stats
 ```
 

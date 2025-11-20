@@ -33,4 +33,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
     }
+
+    @ExceptionHandler(HashNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleHashNotFound(HashNotFoundException ex, HttpServletRequest request) {
+        ErrorResponse errorDTO = ErrorResponse.simple(HttpStatus.NOT_FOUND.value(),
+                "HASH no encontrado", ex.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
+    }
 }

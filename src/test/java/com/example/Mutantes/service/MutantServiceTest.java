@@ -2,7 +2,7 @@ package com.example.Mutantes.service;
 
 import com.example.Mutantes.entity.DnaRecord;
 import com.example.Mutantes.repository.DnaRecordRepository;
-import com.example.Mutantes.util.CalculatorDnaHash;
+import com.example.Mutantes.tool.CalculatorDnaHash;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,7 +30,7 @@ public class MutantServiceTest {
 
     @Test
     @DisplayName("Debe devolver resultado cacheado si existe en repositorio")
-    void testIsMutant_ReturnsCachedValue() {
+    void testIsMutant_ReturnsCachedValue() throws Exception{
         String[] dna = {"ATGC","CAGT","TTAT","AGAA"};
         String hash = CalculatorDnaHash.sha256(dna);
 
@@ -41,7 +42,9 @@ public class MutantServiceTest {
 
         when(dnaRecordRepository.findByDnaHash(hash)).thenReturn(Optional.of(cachedRecord));
 
-        boolean result = mutantService.isMutant(dna);
+        CompletableFuture<Boolean> future = mutantService.isMutant(dna);
+
+        boolean result = future.get();
 
         assertTrue(result);
         verify(mutantDetector, never()).isMutant(any());
@@ -49,14 +52,16 @@ public class MutantServiceTest {
 
     @Test
     @DisplayName("Debe calcular resultado y guardar si no existe en repositorio")
-    void testIsMutant_ComputesAndSavesWhenNotCached() {
+    void testIsMutant_ComputesAndSavesWhenNotCached() throws Exception{
         String[] dna = {"ATGC","CAGT","TTAT","AGAA"};
         String hash = CalculatorDnaHash.sha256(dna);
 
         when(dnaRecordRepository.findByDnaHash(hash)).thenReturn(Optional.empty());
         when(mutantDetector.isMutant(dna)).thenReturn(false);
 
-        boolean result = mutantService.isMutant(dna);
+        CompletableFuture<Boolean> future = mutantService.isMutant(dna);
+
+        boolean result = future.get();
 
         assertFalse(result);
         verify(dnaRecordRepository).save(any(DnaRecord.class));
