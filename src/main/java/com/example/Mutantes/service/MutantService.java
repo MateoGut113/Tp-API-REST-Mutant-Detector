@@ -5,6 +5,7 @@ import com.example.Mutantes.exception.HashNotFoundException;
 import com.example.Mutantes.repository.DnaRecordRepository;
 import com.example.Mutantes.tool.CalculatorDnaHash;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class MutantService {
     private final MutantDetector mutantDetector;
 
     @Async
+    @CacheEvict(value = "statsCache", allEntries = true)
     public CompletableFuture<Boolean> isMutant(String[] dna) {
         String hash = CalculatorDnaHash.sha256(dna);
 
@@ -39,9 +41,10 @@ public class MutantService {
         return CompletableFuture.completedFuture(result);
     }
 
+    @CacheEvict(value = "statsCache", allEntries = true)
     public void deleteByHash(String hash) {
         DnaRecord record = dnaRecordRepository.findByDnaHash(hash)
-                .orElseThrow(() -> new HashNotFoundException("No existe un ADN con el hash " +hash));
+                .orElseThrow(() -> new HashNotFoundException("No existe un ADN con el hash: " +hash));
         dnaRecordRepository.delete(record);
     }
 }

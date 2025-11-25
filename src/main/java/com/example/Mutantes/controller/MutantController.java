@@ -1,9 +1,6 @@
 package com.example.Mutantes.controller;
 
-import com.example.Mutantes.dto.DnaRequest;
-import com.example.Mutantes.dto.ErrorResponse;
-import com.example.Mutantes.dto.HealthResponse;
-import com.example.Mutantes.dto.StatsResponse;
+import com.example.Mutantes.dto.*;
 import com.example.Mutantes.service.MutantService;
 import com.example.Mutantes.service.StatsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,8 +54,16 @@ public class MutantController {
 
 
     @Operation(summary = "Estadisticas sobre mutantes",
-            description = "Devuelve una sumatoria de todos los dna almacenados en la base de datos, ya sea mutante o no, que pueden ser filtradas por rango de fechas")
-    @ApiResponse(responseCode = "200", description = "Estadistica completada")
+            description = "Devuelve una sumatoria de todos los dna almacenados en la base de datos, ya sea mutante o no, que pueden ser filtradas por rango de fechas.\n " +
+                    "Formato de fecha valido: YYYY-MM-DD. Por ejemplo: 2025-11-20")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Estadistica completada"),
+            @ApiResponse(responseCode = "400", description = "Formato de fecha invalido",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDateSchema.class)
+                    ))
+    })
     @GetMapping("/stats")
     public ResponseEntity<StatsResponse> getStats(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -81,7 +86,7 @@ public class MutantController {
             @ApiResponse(responseCode = "404", description = "No se encontró a un ADN con ese hash",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = Error404Schema.class)
                     ))
     })
     @DeleteMapping("/{hash}")

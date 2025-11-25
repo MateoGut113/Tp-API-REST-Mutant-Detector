@@ -3,39 +3,57 @@
 ## 🧠 Contexto del proyecto
 
 El sistema desarrollado es una aplicación orientada a objetos que modela la detección automática de mutantes a partir de secuencias de ADN.
-Este proyecto es una API REST educativa, creada en Java 17 con Spring Boot 3.5.7, que implementa algoritmos de análisis de patrones en matrices.
+Este proyecto es una API REST, creada en Java 17 con Spring Boot 3.5.7, que implementa algoritmos de análisis de patrones en matrices.
 La persistencia se maneja con Spring Data JPA, inicialmente con H2 en memoria y luego migrable a PostgreSQL. El build se gestiona con Gradle.
 
 ## 🧱 Estructura del código
 
 El código fuente está ubicado en src/main/java/org.example.Mutantes
 
-### Las entidades principales son:
-DnaRecord: Representa un registro de ADN analizado. Contiene hash único (dna_hash), resultado (is_mutant) y fecha de creación (created_at). Se persiste en la tabla dna_records.
+### La entidad principal
+**DnaRecord:** Representa un registro de ADN analizado.
+Contiene hash único (dna_hash), resultado (is_mutant) y fecha de creación (created_at).
+Se persiste en la tabla dna_records con su @Entity e @Id necesario.
 
 ### **DTOs (Data Transfer Objects)**
-DnaRequest: Define el contrato de entrada para el endpoint /mutant.
+**DnaRequest:** Define el contrato de entrada para el endpoint /mutant.
 
-StatsResponse: Define el contrato de salida para el endpoint /stats.
+**StatsResponse:** Define el contrato de salida para el endpoint /stats.
+
+**ErrorResponse:** Define el formata para la salida de errores de validación.
+
+**HealthResponse:** Endpoint de salud de la aplicación.
+
+**ErrorDateSchema:** Esquema de ejemplo para mostrar en interfaz.
+
+**Error404Schema:** Esquema de ejemplo para mostrar en interfaz.
 
 ### **Servicios**
-MutantService: Orquesta la lógica de negocio, calcula hash, consulta BD y delega al detector.
+**MutantService:** Orquesta la lógica de negocio, calcula hash, consulta BD y delega al detector.
 
-MutantDetector: Implementa el algoritmo de detección de secuencias mutantes en 4 direcciones (horizontal, vertical, diagonal ↘ y diagonal ↗).
+**MutantDetector:** Implementa el algoritmo de detección de secuencias mutantes en 4 direcciones (horizontal, vertical, diagonal ascendiente y descendiente).
 
-StatsService: Calcula estadísticas de mutantes vs humanos.
+**StatsService:** Calcula estadísticas de mutantes y de humanos.
 
 ### **Repositorios**
-DnaRecordRepository: Interfaz JPA para acceder a dna_records. Métodos principales: findByDnaHash(), countByIsMutant().
+**DnaRecordRepository:** Interfaz JPA para acceder a dna_records.
+Métodos principales: findByDnaHash(), countByIsMutant(), countByIsMutantAndCreatedAtBetween.
 
-### **Capas transversales**
-Validaciones: ValidDnaSequenceValidator asegura que las secuencias sean NxN y solo contengan A/T/C/G.
+### **Validaciones**
+**ValidDnaSequenceValidator:** Asegura que las secuencias sean NxN y solo contengan A/T/C/G.
 
-Excepciones: GlobalExceptionHandler maneja errores globales.
+### **Excepciones**
+**GlobalExceptionHandler:** Maneja errores globales.
 
-SwaggerConfig: Configura documentación automática de API.
+### **Configuraciones**
+**SwaggerConfig:** Configura documentación automática de API.
 
-Tool: Ayuda a completar los requerimientos.
+### **Tool** 
+**CalculaorDnaHash:** Calcula la matriz a VARCHAR 64.
+
+**ConvertCharDna:** Convierte la matriz a cadena de Chars.
+
+**RateLimitRequest:** Asegura un limite de 10 request por minuto.
 
 ## Build the project
 
@@ -43,6 +61,7 @@ BUILD:
 ```bash
  ./gradlew build
 ```
+
 RUN:
 ```bash
  ./gradlew run
@@ -53,41 +72,38 @@ Generar JAR ejecutable:
 ./gradlew bootJar
 java -jar Mutantes-0.0.1-SNAPSHOT.jar
 ```
+
 ## 🎨 Convenciones de estilo
 
-Clases: PascalCase (MutantService, DnaRecord).
+**Nombres de clases:** PascalCase (MutantService, DnaRecord).
 
-Métodos y atributos: camelCase (findByDnaHash, isMutant).
+**Nombres de métodos y atributos:** camelCase (findByDnaHash, isMutant).
 
-Constantes: UPPER_SNAKE_CASE.
+**Nombres de constantes:** UPPER_SNAKE_CASE.
 
-Paquetes:
-
+**Distribucion de paquetes:**
+- config/ → interface en API
 - controller/ → endpoints REST
-
-- service/ → lógica de negocio
-
-- repository/ → acceso a datos
-
-- entity/ → modelo JPA
-
 - dto/ → contratos de API
+- entity/ → modelo JPA
+- exception/ → manejo de errores
+- repository/ → acceso a datos
+- service/ → lógica de negocio
+- tool/ → herramientas personalizadas
+- validation/ → validacion de matriz
 
-Encapsulación:
-
+**Encapsulación:**
 - Atributos privados.
-
 - Uso de Lombok (@Data, @NoArgsConstructor, @RequiredArgsConstructor).
-
 - Evitar setters públicos en entidades, preferir inmutabilidad lógica.
 
 ## 🧭 Instrucciones para Claude (reglas de negocio)
 
-Un humano es mutante si existen ≥ 2 secuencias de exactamente 4 letras iguales en la matriz NxN.
+Un **humano es mutante** si existen ≥ 2 secuencias de exactamente 4 letras iguales en la matriz NxN.
 
-Secuencias válidas: horizontales, verticales, diagonales descendentes y ascendentes.
+**Secuencias válidas:** horizontales, verticales, diagonales descendentes y ascendentes.
 
-Validaciones críticas:
+**Validaciones críticas:**
 
 - Matriz cuadrada NxN.
 
@@ -95,12 +111,13 @@ Validaciones críticas:
 
 - Solo caracteres A/T/C/G.
 
-Persistencia: cada ADN se guarda con hash SHA-256 para evitar duplicados.
+**Persistencia:** cada ADN se guarda con hash SHA-256 para evitar duplicados.
 
-Estadísticas: /stats devuelve ratio mutantes/humanos.
+**Estadísticas:** /stats devuelve ratio mutantes/humanos.
 
 ## 🧪 Ejemplos de código deseado (json)
 
+**Mutante:**
 ```json
 POST /mutant
 {
@@ -109,24 +126,30 @@ POST /mutant
 ```
 
 Response:
-
 - 200 OK → es mutante.
 
+**Humano:**
+```json
+POST /mutant
+{
+  "dna": ["ATGCAA", "CAGTGC", "TTATGT", "AGAAGG", "GCCCTA", "TCACTG"]
+}
+```
+
+Response:
 - 403 Forbidden → no es mutante.
 
 ## 🔐 Restricciones
 
-Claude debe respetar las siguientes reglas técnicas y de estilo para garantizar compatibilidad, claridad y coherencia en el proyecto:
+**Claude debe respetar** las siguientes reglas técnicas y de estilo para garantizar compatibilidad, claridad y coherencia en el proyecto:
 
-- Evitar duplicación de ADN: dna_hash es único.
+- **Evitar duplicación de ADN:** dna_hash es único.
 
-- No violar reglas de negocio (mínimo 2 secuencias).
+- **No violar reglas de negocio** (mínimo 2 secuencias, tamaño de matriz máximo 999x999).
 
-- Usar @Enumerated(EnumType.STRING) si se agregan enums futuros.
+- **No lógica de negocio dentro de entidades JPA.**
 
-- No lógica de negocio dentro de entidades JPA.
-
-- Evitar constructores duplicados si Lombok ya los genera.
+- **Evitar constructores duplicados** si Lombok ya los genera.
 
 ## 🐳 Despliegue con Docker
 

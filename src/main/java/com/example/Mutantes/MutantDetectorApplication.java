@@ -14,7 +14,7 @@ public class MutantDetectorApplication {
 	public static void main(String[] args) {
         SpringApplication.run(MutantDetectorApplication.class, args);
 
-        System.out.println("\n===Aplicacion en curso===");
+        System.out.println("\n===Aplicacion en curso===\n");
 	}
 
 }
