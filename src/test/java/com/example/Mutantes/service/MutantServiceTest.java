@@ -1,6 +1,7 @@
 package com.example.Mutantes.service;
 
 import com.example.Mutantes.entity.DnaRecord;
+import com.example.Mutantes.exception.HashNotFoundException;
 import com.example.Mutantes.repository.DnaRecordRepository;
 import com.example.Mutantes.tool.CalculatorDnaHash;
 import org.junit.jupiter.api.DisplayName;
@@ -133,6 +134,30 @@ public class MutantServiceTest {
                 .build();
 
         assertNotEquals(record1, record2);
+    }
+
+    @Test
+    @DisplayName("Debe borrar el DNA si existe")
+    void testDeleteByHashSuccess() {
+        DnaRecord record = new DnaRecord();
+        record.setDnaHash("abc123");
+
+        when(dnaRecordRepository.findByDnaHash("abc123"))
+                .thenReturn(Optional.of(record));
+
+        mutantService.deleteByHash("abc123");
+
+        verify(dnaRecordRepository).delete(record);
+    }
+
+    @Test
+    @DisplayName("Debe lanzar excepción si el DNA no existe")
+    void testDeleteByHashNotFound() {
+        when(dnaRecordRepository.findByDnaHash("abc123"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(HashNotFoundException.class,
+                () -> mutantService.deleteByHash("abc123"));
     }
 
 }

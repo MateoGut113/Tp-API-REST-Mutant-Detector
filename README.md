@@ -33,7 +33,8 @@
 
 ## 🎯 ¿Qué es este proyecto?
 
-Este proyecto es una **API REST** que resuelve un problema de análisis de patrones en matrices. La historia detrás es que Magneto quiere reclutar mutantes para su ejército, y necesita una forma automática de detectarlos analizando su ADN.
+Este proyecto es una **API REST** que resuelve un problema de análisis de patrones en matrices.
+La historia detrás es que Magneto quiere reclutar mutantes para su ejército, y necesita una forma automática de detectarlos analizando su ADN.
 
 ### ¿Qué vas a aprender?
 
@@ -215,7 +216,7 @@ BUILD SUCCESSFUL in 15s
 
 **Archivo generado:**
 ```
-build/libs/inicial1-0.0.1-SNAPSHOT.jar
+build/libs/Mutantes-0.0.1-SNAPSHOT.jar
 ```
 
 ### Opciones del comando bootJar
@@ -264,8 +265,8 @@ java -jar Mutantes-0.0.1-SNAPSHOT.jar
 # Con puerto personalizado
 java -jar -Dserver.port=9090 Mutantes-0.0.1-SNAPSHOT.jar
 
-# Con perfil de producción
-java -jar -Dspring.profiles.active=prod Mutantes-0.0.1-SNAPSHOT.jar
+# Con perfil de desarrollo
+java -jar -Dspring.profiles.active=dev Mutantes-0.0.1-SNAPSHOT.jar
 ```
 
 **Ventajas del JAR:**
@@ -466,7 +467,7 @@ docker run -p 8080:8080 mutantes-api
 docker run -d -p 8080:8080 --name mutantes-container mutantes-api
 
 # Con variables de entorno
-docker run -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod mutantes-api
+docker run -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE=dev mutantes-api
 
 # Con mapeo de puerto diferente (host:container)
 docker run -d -p 9090:8080 mutantes-api
@@ -609,8 +610,17 @@ SCRIPT TO 'backup.sql';
 
 Luego importás en PostgreSQL:
 
+De esta manera:
+
 ```bash
 psql -U mutant_user -d mutantdb -f backup.sql
+```
+
+O de esta manera:
+
+```bash
+docker cp backup.sql postgres-mutantes:/backup.sql
+docker exec -it postgres-mutantes psql -U mutant_user -d mutantdb -f /backup.sql
 ```
 
 ### Troubleshooting Docker
@@ -1065,10 +1075,15 @@ Mutantes/
 │   │   ├── MutantDetector.java       (Algoritmo core)
 │   │   ├── MutantService.java        (Orquestación)
 │   │   └── StatsService.java         (Estadísticas)
+|   |
+│   ├── 📂 tool/                       ← Herramientas utilizadas
+│   │   ├── CalculatorDnaHash.java     (Cálculo del hash)
+│   │   ├── ConvertCharDna.java        (Conversion a char)
+│   │   └── RateLimitRequest.java      (Limite de request por minuto)
 │   │
-│   ├── 📂 validation/                ← Validaciones custom
-│   │   ├── ValidDnaSequence.java     (Anotación)
-│   │   └── ValidDnaSequenceValidator.java (Lógica)
+│   ├── 📂 validation/                     ← Validaciones custom
+│   │   ├── ValidDnaSequence.java           (Anotación)
+│   │   └── ValidDnaSequenceValidator.java  (Lógica)
 │   │
 │   └── MutantDetectorApplication.java ← Main class
 │

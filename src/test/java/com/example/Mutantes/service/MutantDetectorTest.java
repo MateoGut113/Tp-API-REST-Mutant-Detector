@@ -1,7 +1,11 @@
 package com.example.Mutantes.service;
 
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -266,4 +270,36 @@ public class MutantDetectorTest {
         MutantDetector detector = new MutantDetector();
         assertTrue(detector.isMutant(dna));
     }
+
+    //Nuevos requerimientos
+    @Test
+    @DisplayName("Debe loguear secuencia horizontal encontrada")
+    void testHorizontalLogging() {
+        Logger logger = (Logger) LoggerFactory.getILoggerFactory()
+                .getLogger(MutantDetector.class.getName());
+        ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+        listAppender.start();
+        logger.addAppender(listAppender);
+
+        String[] dna = {
+                "CCCC",
+                "AAAA",
+                "TTTT",
+                "GGGG"
+        };
+
+        MutantDetector detector = new MutantDetector();
+        detector.isMutant(dna);
+
+        listAppender.list.forEach(event ->
+                System.out.println("LOG: " + event.getFormattedMessage()));
+
+        // Verificar que se logueó el mensaje esperado
+        boolean found = listAppender.list.stream()
+                .anyMatch(event -> event.getFormattedMessage()
+                        .contains("Secuencia horizontal encontrada"));
+
+        assertTrue(found, "Debe loguear las secuencias horizontales encontradas");
+    }
+    
 }
