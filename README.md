@@ -42,7 +42,7 @@ Se hizo uso de **Spring Initializr** (start.spring.io) para crear el proyecto.
 
 O directamente desde el IDE ejecutando la clase `MutantDetectorApplication`.
 
-## ⚙️ Comandos mas utilizados (VER)
+## ⚙️ Comandos mas utilizados
 
 ```bash
 # Ejecutar todos los tests
