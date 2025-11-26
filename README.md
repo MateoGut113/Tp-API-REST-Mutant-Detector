@@ -52,7 +52,7 @@ O directamente desde el IDE ejecutando la clase `MutantDetectorApplication`.
 ```bash
 # Generar reporte de cobertura (Jacoco)
 ./gradlew jacocoTestReport
-xdg-open build/reports/jacoco/test/html/index.html
+start build\reports\jacoco\test\html\index.html
 ```
 
 ```bash
@@ -135,7 +135,7 @@ Asegurarse de que la aplicación esté corriendo (./gradlew bootRun).
 ### 📘 Swagger UI (Local)
 Abrir el navegador y acceder a:
 
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/swagger-ui.html
 
 Desde allí puedes:
 

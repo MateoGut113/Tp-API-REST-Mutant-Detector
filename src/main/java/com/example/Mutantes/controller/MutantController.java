@@ -78,8 +78,9 @@ public class MutantController {
     @Operation(summary = "Endpoint de salud", description = "Sirve como punto de verificación de estado de la aplicación")
     @ApiResponse(responseCode = "200", description = "Verificacion completada")
     @GetMapping("/health")
-    public HealthResponse health() {
-        return new HealthResponse("UP");
+    public ResponseEntity<HealthResponse> health() {
+        HealthResponse response = new HealthResponse("UP");
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Eliminar DNA", description = "Elimina un ADN mediante el hash (SHA-256 del ADN), si existe")

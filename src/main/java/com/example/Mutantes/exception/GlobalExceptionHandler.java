@@ -50,4 +50,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
     }
+
+    @ExceptionHandler(DnaHashCalculationException.class)
+    public ResponseEntity<ErrorResponse> handleDnaHashError(DnaHashCalculationException ex, HttpServletRequest request) {
+        ErrorResponse errorDTO = ErrorResponse.simple(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error al calcular hash de ADN",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
+    }
+
 }

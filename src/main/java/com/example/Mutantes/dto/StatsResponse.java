@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record StatsResponse(
         @JsonProperty("count_mutant_dna")
-        @Schema(description = "Cantidad de DNAs mutantes detectados",
+        @Schema(description = "Cantidad de ADN mutantes detectados",
                 example = "50",
                 required = true)
         Long count_mutant_dna,
 
         @JsonProperty("count_human_dna")
-        @Schema(description = "Cantidad de DNAs humanos detectados",
+        @Schema(description = "Cantidad de ADN humanos detectados",
                 example = "100",
                 required = true)
         Long count_human_dna,

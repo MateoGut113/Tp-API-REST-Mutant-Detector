@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -97,6 +100,28 @@ public class StatsServiceTest {
         assertEquals(3L, response.count_mutant_dna());
         assertEquals(7L, response.count_human_dna());
         assertEquals(0.42857142857142855, response.ratio());
+    }
+
+    @Test
+    @DisplayName("Debe calcular estadísticas filtrando por rango de fechas")
+    void testCountByDateRange() {
+        // Definimos fechas de inicio y fin
+        LocalDate startDate = LocalDate.of(2025, 11, 1);
+        LocalDate endDate   = LocalDate.of(2025, 11, 29);
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime   = endDate.atTime(23, 59, 59);
+
+        when(dnaRecordRepository.countByIsMutantAndCreatedAtBetween(true, startDateTime, endDateTime))
+                .thenReturn(4L);
+        when(dnaRecordRepository.countByIsMutantAndCreatedAtBetween(false, startDateTime, endDateTime))
+                .thenReturn(2L);
+
+        StatsResponse response = statsService.obtenerEstadisticas(startDate, endDate);
+
+        assertEquals(4L, response.count_mutant_dna());
+        assertEquals(2L, response.count_human_dna());
+        assertEquals(2.0, response.ratio());
     }
 
 }
