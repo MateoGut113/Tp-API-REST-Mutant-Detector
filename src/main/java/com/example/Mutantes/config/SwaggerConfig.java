@@ -17,7 +17,9 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API de control de ADNs")
-                        .description("Esta API permite analizar AND y definir si es mutante o humano.")
+                        .description("Esta API permite analizar AND y definir si es mutante o humano. " +
+                                "Un humano es considerado mutante si se encuentran más de una secuencia de cuatro letras iguales (A, T, C, G) " +
+                                "en dirección horizontal, vertical o diagonal en su matriz de ADN NxN.")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Mateo Gutierrez")

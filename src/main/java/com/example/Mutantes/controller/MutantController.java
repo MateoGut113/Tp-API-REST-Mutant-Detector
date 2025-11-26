@@ -29,7 +29,8 @@ public class MutantController {
     private final StatsService statsService;
 
 
-    @Operation(summary = "Analizador de ADN", description = "Analiza un ADN, validando a la matriz y su contenido")
+    @Operation(summary = "Analizador de ADN", description = "Analiza un ADN, validando a la matriz y su contenido. Un humano es mutante si tiene más de una secuencia de 4 letras iguales en dirección horizontal, vertical o diagonal. " +
+            "El ADN se representa como una matriz NxN con caracteres A, T, C, G.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ADN Mutante - Se encontraron más de una secuencia de 4 letras iguales"),
             @ApiResponse(responseCode = "400", description = "Validacion de matriz denegada - ADN nulo, vacío, matriz no cuadrada o caracteres inválidos",
@@ -54,7 +55,8 @@ public class MutantController {
 
 
     @Operation(summary = "Estadisticas sobre mutantes",
-            description = "Devuelve una sumatoria de todos los dna almacenados en la base de datos, ya sea mutante o no, que pueden ser filtradas por rango de fechas.\n " +
+            description = "Devuelve una sumatoria de todos los AND verificados, cantidad de ADN mutantes detectados, cantidad de ADN humanos detectados, " +
+                    "y el ratio entre mutantes y humanos (count_mutant_dna / count_human_dna), que pueden ser filtradas por rango de fechas.\n " +
                     "Formato de fecha valido: YYYY-MM-DD. Por ejemplo: 2025-11-20")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Estadistica completada"),
@@ -80,7 +82,7 @@ public class MutantController {
         return new HealthResponse("UP");
     }
 
-    @Operation(summary = "Eliminar DNA", description = "Elimina un ADN de la base de datos, si existe")
+    @Operation(summary = "Eliminar DNA", description = "Elimina un ADN mediante el hash (SHA-256 del ADN), si existe")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Borrado exitoso"),
             @ApiResponse(responseCode = "404", description = "No se encontró a un ADN con ese hash",
