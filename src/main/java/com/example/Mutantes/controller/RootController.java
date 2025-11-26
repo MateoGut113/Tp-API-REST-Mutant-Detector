@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootController {
     @GetMapping("/")
-    public String home() {
-        return "==APP Mutant Detector API está corriendo==";
+    public String redirectToSwagger() {
+        return "redirect:/swagger-ui/index.html";
     }
 }
 
