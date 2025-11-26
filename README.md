@@ -61,7 +61,7 @@ xdg-open build/reports/jacoco/test/html/index.html
 java -jar build/libs/Mutantes-0.0.1-SNAPSHOT.jar
 ```
 
-**Para estos comandos debe tener la aplicacion Docker Desktop instalada y abierta:**
+**Para estos 4 comandos debe tener la aplicacion Docker Desktop instalada y abierta:**
 ```bash
 # Construir imagen Docker
 docker build -t mutantes-api .
@@ -70,6 +70,19 @@ docker build -t mutantes-api .
 ```bash
 # Ejecutar contenedor Docker
 docker run -p 8080:8080 mutantes-api
+```
+
+**Tambien puedes:**
+
+- **Ejecutar con Docker Compose:**
+```bash
+#Levanta dos contenedores (API + PostgreSQL)
+
+# Iniciar
+docker-compose up -d
+
+# Detener
+docker-compose down
 ```
 
 ## 🌐 Tabla de endpoints
@@ -152,6 +165,23 @@ Luego:
 - Probar la conexión con "Test Connection"
 - Presionar "Connect" para visualizar la tabla producto y consultar los datos persistidos.
 
+**Migración de datos de H2 a Postgre (Opcional):**
+
+Ejecuta en la consola de H2:
+
+```sql
+SCRIPT TO 'backup.sql';
+```
+
+Luego importás en PostgreSQL:
+
+```bash
+docker cp backup.sql postgres-mutantes:/backup.sql
+docker exec -it postgres-mutantes psql -U mutant_user -d mutantdb -f /backup.sql
+```
+
+**Nota:** El proyecto ya cuenta con un archivo `backup.sql`, a modo de ejemplo, con 19 ADN almacenados.
+
 ## 💭 Conclusiones personales sobre lo aprendido
 En lo personal, este trabajo práctico integrador me permitió:
 
@@ -174,6 +204,9 @@ hasta la puesta en marcha de un servicio web robusto y portable.
 
 **Para ver una guia tecnica sobre la aplicación, ver el archivo:**\
 `CLAUDE.md`
+
+**Link del repositorio:**\
+https://github.com/MateoGut113/Tp-API-REST-Mutant-Detector
 
 ## 👤 Nombre y legajo
 **Nombre:** Mateo Gutierrez\
