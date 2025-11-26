@@ -167,7 +167,7 @@ Luego:
 
 **Migración de datos de H2 a Postgre (Opcional):**
 
-Ejecuta en la consola de H2:
+Ejecutar en la consola de H2:
 
 ```sql
 SCRIPT TO 'backup.sql';
