@@ -30,6 +30,11 @@ public class RateLimitRequest extends OncePerRequestFilter {
             return;
         }
 
+        if (request.getRequestURI().equals("/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String ip = request.getRemoteAddr();
         long now = System.currentTimeMillis();
 

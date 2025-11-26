@@ -81,6 +81,21 @@ public class MutantDetectorTest {
     }
 
     @Test
+    @DisplayName("Debe detectar mutante con secuencias horizontales y verticales")
+    void testMutantWithHorizontalAndVerticalSequences() {
+        String[] dna = {
+                "CTGCG",
+                "CAGTG",
+                "TTATG",
+                "AGAAG",
+                "CCCCT"
+        };
+
+        MutantDetector detector = new MutantDetector();
+        assertTrue(detector.isMutant(dna));
+    }
+
+    @Test
     @DisplayName("Debe detectar mutante en matriz grande (10x10)")
     void testMutantWithLargeDna(){
         String[] dna = {
@@ -301,5 +316,35 @@ public class MutantDetectorTest {
 
         assertTrue(found, "Debe loguear las secuencias horizontales encontradas");
     }
-    
+
+    @Test
+    @DisplayName("Debe loguear secuencia diagonal encontrada")
+    void testDiagonalLogging() {
+        Logger logger = (Logger) LoggerFactory.getILoggerFactory()
+                .getLogger(MutantDetector.class.getName());
+        ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+        listAppender.start();
+        logger.addAppender(listAppender);
+
+        String[] dna = {
+                "ATGC",
+                "CAGT",
+                "TTAT",
+                "AGCA"
+        };
+
+        MutantDetector detector = new MutantDetector();
+        detector.isMutant(dna);
+
+        listAppender.list.forEach(event ->
+                System.out.println("LOG: " + event.getFormattedMessage()));
+
+        // Verificar que se logueó el mensaje esperado
+        boolean found = listAppender.list.stream()
+                .anyMatch(event -> event.getFormattedMessage()
+                        .contains("Secuencia diagonal descendiente encontrada"));
+
+        assertTrue(found, "Debe loguear las secuencias diagonales encontradas");
+    }
+
 }
