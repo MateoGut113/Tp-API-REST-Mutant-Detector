@@ -1103,9 +1103,10 @@ Mutantes/
 │
 ├── build.gradle                      ← Dependencias
 ├── settings.gradle                   ← Config Gradle
-├── gradlew / gradlew.bat            ← Scripts Gradle
+├── gradlew / gradlew.bat             ← Scripts Gradle
 ├── CLAUDE.md                         ← Guía técnica
-└── README.md                         ← Este archivo
+├── README.md                         ← Descripcion del proyecto
+└── GUIA-INTEGRADOR-ESTUDIANTE.md     ← Este archivo
 ```
 
 ### Descripción de Cada Capa
