@@ -28,6 +28,12 @@ Se persiste en la tabla dna_records con su @Entity e @Id necesario.
 
 **Error404Schema:** Esquema de ejemplo para mostrar en interfaz.
 
+### **Controladores**
+**MutantController:** Clase controladora principal de la API Mutant Detector. Expone los endpoints bajo la ruta `/dna`.
+No contiene lógica de negocio propia: actúa como puente entre la capa de presentación (HTTP) y la capa de servicios.
+
+**RootController:** Clase controladora auxiliar para la raíz de la aplicación (`/`).
+
 ### **Servicios**
 **MutantService:** Orquesta la lógica de negocio, calcula hash, consulta BD y delega al detector.
 

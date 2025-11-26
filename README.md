@@ -104,7 +104,6 @@ docker run -p 8080:8080 mutantes-api
 4. Eliminar dna mediante el hash
 ![Captura de pantalla DELETE Mutant.png](capturas/Captura%20de%20pantalla%20DELETE%20Mutant.png)
 
-
 **Prueba de GET (estadistica dna)**
 ![Captura de pantalla - Prueba de GET Stats.png](capturas/Captura%20de%20pantalla%20-%20Prueba%20de%20GET%20Stats.png)
 
@@ -120,7 +119,7 @@ docker run -p 8080:8080 mutantes-api
 ## 🔍 Instrucciones para acceder a Swagger UI y consola H2
 Asegurarse de que la aplicación esté corriendo (./gradlew bootRun).
 
-### 📘 Swagger UI
+### 📘 Swagger UI (Local)
 Abrir el navegador y acceder a:
 
 http://localhost:8080/swagger-ui/index.html
@@ -130,6 +129,13 @@ Desde allí puedes:
 - Probar todos los endpoints de la API
 - Ver los modelos de entrada y salida de datos (DTOs)
 - Consultar los códigos de respuesta HTTP
+
+### 🚀 Deploy en Render (Producción)
+
+La API está desplegada en Render y disponible en:
+
+https://api-rest-mutantdetector.onrender.com
+
 
 ------------------------------------------------------------------
 ### 🗄️ Consola H2 (Base de datos en memoria)
